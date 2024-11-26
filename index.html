@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>String & Binary Converter</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            background: linear-gradient(135deg, #4e54c8, #8f94fb);
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background: #2c2f33;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            padding: 30px;
+            max-width: 500px;
+            width: 75%;
+            text-align: center;
+            transition: transform 0.3s;
+            margin-top: 60px;
+        }
+
+        .container:hover {
+            transform: scale(1.02);
+        }
+
+        h2 {
+            font-size: 24px;
+            color: #f5f5f5;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+
+        textarea {
+            width: 90%;
+            height: 120px;
+            background: #23272a;
+            border: 1px solid #40444b;
+            border-radius: 8px;
+            padding: 15px;
+            color: #fff;
+            font-size: 16px;
+            resize: none;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        textarea:focus {
+            border-color: #7289da;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            font-size: 16px;
+            font-weight: bold;
+            background: #5865f2;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        button:hover {
+            background: #4e54c8;
+            transform: translateY(-3px);
+        }
+
+        button:active {
+            transform: translateY(1px);
+        }
+
+        .output {
+            margin-top: 15px;
+            background: #23272a;
+            border: 1px solid #40444b;
+            border-radius: 8px;
+            padding: 15px;
+            font-size: 16px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            color: #dcdfe3;
+            overflow-x: auto;
+        }
+        .copied-message {
+    display: none; /* Initially hidden */
+    position: absolute;
+    top: -30px; /* Position above the button or field */
+    left: 50%;
+    transform: translateX(-50%);
+    background: #43a047; /* Green background for success */
+    color: #fff; /* White text */
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    opacity: 0; /* Start fully transparent */
+    transition: opacity 0.5s, top 0.5s;
+    z-index: 10;
+}
+
+.copied-message.show {
+    display: block;
+    opacity: 1; /* Fully visible */
+    top: -40px; /* Slight upward movement for animation effect */
+}
+.footer {
+            width: 100%;
+            background: #2c2f33;
+            color: #ffffff;
+            text-align: center;
+            padding: 15px;
+            position: absolute;
+            margin-top: -600px;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .footer a {
+            color: #7289da;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        .footer a:hover {
+            color: #5865f2;
+        }
+
+        .footer span {
+            display: block;
+            margin-top: 5px;
+            font-size: 14px;
+        }
+
+        @media (min-width: 600px) {
+            .footer {
+                padding: 20px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>    <div class="footer">
+    
+    <span> <br>Developed by Haseeb</span>
+    <a href="https://haseeb-giit.github.io/potfolio/">@haseeb.giit</a>
+</div>
+    <div class="container">
+        <h2>Message ↔ Binary Converter</h2>
+        <textarea id="inputText" placeholder="Enter Message or binary here..."></textarea>
+        <button onclick="convertToBinary()">Convert to Binary</button>
+        <button onclick="convertToText()">Convert to Message</button>
+        <span>Copied</span>
+
+        <div class="output" id="output"></div>
+        <div style="position: relative; display: inline-block;">
+            <button class="copy-btn" onclick="copyToClipboard()">Copy Message</button>
+            <span class="copied-message" id="copiedMessage">Copied!</span>
+        </div>
+
+
+    </div>
+
+
+</body>
+<script>
+    // Function to convert string to binary
+    function convertToBinary() {
+        const input = document.getElementById("inputText").value;
+        if (!input) {
+            alert("Please enter some text to convert.");
+            return;
+        }
+
+        // Convert each character to binary
+        const binary = input.split("").map(char => {
+            return char.charCodeAt(0).toString(2).padStart(8, "0");
+        }).join(" ");
+
+        document.getElementById("output").textContent =  binary;
+    }
+
+    // Function to convert binary to string
+    function convertToText() {
+        const input = document.getElementById("inputText").value;
+        if (!input) {
+            alert("Please enter binary to convert.");
+            return;
+        }
+
+        // Convert binary back to string
+        try {
+            const text = input.split(" ").map(binary => {
+                return String.fromCharCode(parseInt(binary, 2));
+            }).join("");
+
+            document.getElementById("output").textContent =  text;
+        } catch (error) {
+            alert("Invalid binary input. Please make sure the format is correct.");
+        }
+    }
+
+    function copyToClipboard() {
+        const output = document.getElementById("output").textContent;
+        if (!output.trim()) {
+            alert("Nothing to copy! Please generate some output first.");
+            return;
+        }
+        navigator.clipboard.writeText(output).then(() => {
+            alert("Text copied to clipboard!");
+        }).catch(err => {
+            alert("Failed to copy text. Please try again.");
+        });
+    }
+    function copyToClipboard() {
+const output = document.getElementById("output").textContent;
+if (!output) {
+    alert("Nothing to copy! Please perform a conversion first.");
+    return;
+}
+
+// Copy text to clipboard
+navigator.clipboard.writeText(output).then(() => {
+    const copiedMessage = document.getElementById("copiedMessage");
+    copiedMessage.classList.add("show"); // Show the message
+    setTimeout(() => {
+        copiedMessage.classList.remove("show"); // Hide after 2 seconds
+    }, 2000);
+}).catch(err => {
+    alert("Failed to copy: " + err);
+});
+}
+
+</script>
+</html>
